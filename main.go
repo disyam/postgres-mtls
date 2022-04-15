@@ -118,7 +118,7 @@ func main() {
 		ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth, x509.ExtKeyUsageClientAuth},
 		NotBefore:   time.Now(),
 		NotAfter:    time.Now().AddDate(10, 0, 0),
-		DNSNames:    []string{"127.0.0.1"},
+		DNSNames:    []string{"127.0.0.1"}, // server hostname
 	}
 	servCertDER, err := x509.CreateCertificate(rand.Reader, servTmpl, rootCert, servPriv.Public(), rootPriv)
 	if err != nil {
@@ -189,12 +189,11 @@ func main() {
 	cliTmpl := &x509.Certificate{
 		SerialNumber: big.NewInt(1),
 		Subject: pkix.Name{
-			CommonName: "postgres",
+			CommonName: "postgres", // postgresql server user
 		},
 		ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth, x509.ExtKeyUsageClientAuth},
 		NotBefore:   time.Now(),
 		NotAfter:    time.Now().AddDate(10, 0, 0),
-		DNSNames:    []string{"127.0.0.1"},
 	}
 	cliCertDER, err := x509.CreateCertificate(rand.Reader, cliTmpl, rootCert, cliPriv.Public(), rootPriv)
 	if err != nil {
@@ -207,8 +206,7 @@ func main() {
 
 	// verify client certificate
 	_, err = cliCert.Verify(x509.VerifyOptions{
-		Roots:       certPool,
-		CurrentTime: time.Now(),
+		Roots: certPool,
 	})
 	if err != nil {
 		log.Fatalln(err)
