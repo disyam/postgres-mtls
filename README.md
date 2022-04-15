@@ -1,6 +1,8 @@
 # Postgres mTLS
 
-1. `go run main.go`
+1. run one of these
+    - `go run main.go` need golang >= 1.18
+    - `./generate.sh` need openssl >= 3
 2. `docker build -t postgres-mtls .`
 3. `docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=password postgres-mtls`
 4. `chmod 600 certs/client.key`
