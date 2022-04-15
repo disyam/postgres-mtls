@@ -15,6 +15,12 @@ import (
 )
 
 func main() {
+	// create certs directory if not exists
+	err := os.MkdirAll("certs", os.ModePerm)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	// generate root private key
 	rootPriv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
